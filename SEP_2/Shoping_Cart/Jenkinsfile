@@ -1,0 +1,33 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('iyyoba') // Jenkins credentials ID
+        DOCKER_IMAGE_NAME = "iyyoba/Shoping_Cart"
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/iyyoba/Year2_Period4/tree/d756a3fca127b91c08224415510867d09ea9ea84/SEP_2/Shoping_Cart'
+        }
+
+        stage('Build') {
+            steps {
+                sh 'mvn clean compile'
+            }
+        }
+
+        stage('Unit Tests') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+
+        stage('Package') {
+            steps {
+                sh 'mvn package'
+            }
+        }
+    }
+}
