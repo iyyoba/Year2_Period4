@@ -3,13 +3,14 @@ pipeline {
 
     environment {
         DOCKERHUB_CREDENTIALS = credentials('iyyoba') // Jenkins credentials ID
-        DOCKER_IMAGE_NAME = "iyyoba/Shoping_Cart"
+        DOCKER_IMAGE_NAME = "iyyoba/shopping_cart"   // Docker Hub repo name
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/iyyoba/Year2_Period4/tree/d756a3fca127b91c08224415510867d09ea9ea84/SEP_2/Shoping_Cart'
+                git 'https://github.com/iyyoba/Year2_Period4.git'
+            }
         }
 
         stage('Build') {
@@ -27,6 +28,21 @@ pipeline {
         stage('Package') {
             steps {
                 sh 'mvn package'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t $DOCKER_IMAGE_NAME:latest .'
+            }
+        }
+
+        stage('Push to Docker Hub') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'iyyoba', usernameVariable: 'iyyoba', passwordVariable: 'jenkins-pipeline')]) {
+                    sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
+                    sh 'docker push $DOCKER_IMAGE_NAME:latest'
+                }
             }
         }
     }
