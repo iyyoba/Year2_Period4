@@ -1,3 +1,4 @@
+package example.shoppingcart;
 import java.util.*;
 
 public class ShoppingCart {
