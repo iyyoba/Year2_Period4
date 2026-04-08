@@ -1,0 +1,5 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+shopping-cart,example.shoppingcart,ShoppingCart,115,31,6,2,27,5,7,3,3,2
+shopping-cart,example.shoppingcart,LocalizationService,31,0,0,0,10,0,5,0,5,0
+shopping-cart,example.shoppingcart,MainApp,29,0,0,0,10,0,3,0,3,0
+shopping-cart,example.shoppingcart,ShoppingCartController,199,0,4,0,41,0,8,0,6,0
