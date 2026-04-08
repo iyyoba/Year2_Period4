@@ -1,32 +1,31 @@
-package example.shoppingcart;
+package example.shoppingcart.service;
 
-import java.util.Locale;
-import java.util.ResourceBundle;
+import example.shoppingcart.db.DatabaseConnection;
+import java.sql.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LocalizationService {
 
-    private static final String BUNDLE_PATH = "example.shoppingcart.i18n.messages";
+    public Map<String, String> getLocalizedStrings(String language) {
+        Map<String, String> messages = new HashMap<>();
 
-    private ResourceBundle bundle;
+        String sql = "SELECT `key`, value FROM localization_strings WHERE language = ?";
 
-    public LocalizationService() {
-        // Default locale
-        this.bundle = ResourceBundle.getBundle(BUNDLE_PATH, Locale.getDefault());
-    }
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-    public LocalizationService(Locale locale) {
-        this.bundle = ResourceBundle.getBundle(BUNDLE_PATH, locale);
-    }
+            stmt.setString(1, language);
+            ResultSet rs = stmt.executeQuery();
 
-    public String get(String key) {
-        return bundle.getString(key);
-    }
+            while (rs.next()) {
+                messages.put(rs.getString("key"), rs.getString("value"));
+            }
 
-    public void setLocale(Locale locale) {
-        this.bundle = ResourceBundle.getBundle(BUNDLE_PATH, locale);
-    }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-    public Locale getLocale() {
-        return bundle.getLocale();
+        return messages;
     }
 }

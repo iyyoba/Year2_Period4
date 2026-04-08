@@ -1,28 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MainApp.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">shopping-cart</a> &gt; <a href="index.source.html" class="el_package">example.shoppingcart</a> &gt; <span class="el_source">MainApp.java</span></div><h1>MainApp.java</h1><pre class="source lang-java linenums">package example.shoppingcart;
 
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
+import example.shoppingcart.service.CartService;
+import example.shoppingcart.service.LocalizationService;
 
-<span class="nc" id="L8">public class MainApp extends Application {</span>
+import java.util.Map;
 
-    @Override
-    public void start(Stage stage) throws Exception {
-<span class="nc" id="L12">        FXMLLoader loader = new FXMLLoader(</span>
-<span class="nc" id="L13">                MainApp.class.getResource(&quot;/example/shoppingcart/shoppingcart-view.fxml&quot;)</span>
-        );
-
-
-
-<span class="nc" id="L18">        Scene scene = new Scene(loader.load());</span>
-<span class="nc" id="L19">        stage.setScene(scene);</span>
-<span class="nc" id="L20">        stage.setTitle(&quot;Shopping Cart App&quot;);</span>
-<span class="nc" id="L21">        stage.show();</span>
-<span class="nc" id="L22">    }</span>
+<span class="nc" id="L8">public class MainApp {</span>
 
     public static void main(String[] args) {
-<span class="nc" id="L25">        launch(args);</span>
-<span class="nc" id="L26">    }</span>
+
+<span class="nc" id="L12">        String language = &quot;en&quot;; // change to &quot;fr&quot; to test</span>
+
+<span class="nc" id="L14">        LocalizationService localizationService = new LocalizationService();</span>
+<span class="nc" id="L15">        Map&lt;String, String&gt; messages = localizationService.getLocalizedStrings(language);</span>
+
+<span class="nc" id="L17">        System.out.println(messages.get(&quot;welcome_message&quot;));</span>
+
+        // Sample cart data
+<span class="nc" id="L20">        CartService cartService = new CartService();</span>
+
+<span class="nc" id="L22">        int totalItems = 2;</span>
+<span class="nc" id="L23">        double totalCost = 100.0;</span>
+
+<span class="nc" id="L25">        int cartId = cartService.saveCartRecord(totalItems, totalCost, language);</span>
+
+<span class="nc" id="L27">        cartService.saveCartItem(cartId, 1, 50.0, 1);</span>
+<span class="nc" id="L28">        cartService.saveCartItem(cartId, 2, 25.0, 2);</span>
+
+<span class="nc" id="L30">        System.out.println(&quot;Cart saved successfully!&quot;);</span>
+<span class="nc" id="L31">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

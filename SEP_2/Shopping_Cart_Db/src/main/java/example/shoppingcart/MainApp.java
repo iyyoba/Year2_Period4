@@ -1,27 +1,32 @@
 package example.shoppingcart;
 
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
+import example.shoppingcart.service.CartService;
+import example.shoppingcart.service.LocalizationService;
 
-public class MainApp extends Application {
+import java.util.Map;
 
-    @Override
-    public void start(Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(
-                MainApp.class.getResource("/example/shoppingcart/shoppingcart-view.fxml")
-        );
-
-
-
-        Scene scene = new Scene(loader.load());
-        stage.setScene(scene);
-        stage.setTitle("Shopping Cart App");
-        stage.show();
-    }
+public class MainApp {
 
     public static void main(String[] args) {
-        launch(args);
+
+        String language = "en"; // change to "fr" to test
+
+        LocalizationService localizationService = new LocalizationService();
+        Map<String, String> messages = localizationService.getLocalizedStrings(language);
+
+        System.out.println(messages.get("welcome_message"));
+
+        // Sample cart data
+        CartService cartService = new CartService();
+
+        int totalItems = 2;
+        double totalCost = 100.0;
+
+        int cartId = cartService.saveCartRecord(totalItems, totalCost, language);
+
+        cartService.saveCartItem(cartId, 1, 50.0, 1);
+        cartService.saveCartItem(cartId, 2, 25.0, 2);
+
+        System.out.println("Cart saved successfully!");
     }
 }

@@ -1,4 +1,6 @@
 example/shoppingcart/MainApp.class
 example/shoppingcart/ShoppingCartController.class
-example/shoppingcart/LocalizationService.class
 example/shoppingcart/ShoppingCart.class
+example/shoppingcart/service/CartService.class
+example/shoppingcart/service/LocalizationService.class
+example/shoppingcart/db/DatabaseConnection.class
