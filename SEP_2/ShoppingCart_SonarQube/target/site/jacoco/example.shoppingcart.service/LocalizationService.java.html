@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LocalizationService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">shopping-cart</a> &gt; <a href="index.source.html" class="el_package">example.shoppingcart.service</a> &gt; <span class="el_source">LocalizationService.java</span></div><h1>LocalizationService.java</h1><pre class="source lang-java linenums">package example.shoppingcart.service;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
+public class LocalizationService {
+
+    private static final String QUERY =
+            &quot;SELECT string_key, string_value FROM localization_strings WHERE language = ?&quot;;
+
+    private final Connection connection;
+
+<span class="fc" id="L18">    public LocalizationService(Connection connection) {</span>
+<span class="fc" id="L19">        this.connection = Objects.requireNonNull(connection, &quot;Connection must not be null&quot;);</span>
+<span class="fc" id="L20">    }</span>
+
+    public Map&lt;String, String&gt; getLocalizedStrings(String language) {
+<span class="pc bpc" id="L23" title="2 of 4 branches missed.">        if (language == null || language.isBlank()) {</span>
+<span class="nc" id="L24">            throw new IllegalArgumentException(&quot;Language must not be null or empty&quot;);</span>
+        }
+
+<span class="fc" id="L27">        Map&lt;String, String&gt; localized = new HashMap&lt;&gt;();</span>
+
+<span class="fc" id="L29">        try (PreparedStatement stmt = connection.prepareStatement(QUERY)) {</span>
+<span class="fc" id="L30">            stmt.setString(1, language);</span>
+
+<span class="fc" id="L32">            try (ResultSet rs = stmt.executeQuery()) {</span>
+<span class="fc bfc" id="L33" title="All 2 branches covered.">                while (rs.next()) {</span>
+<span class="fc" id="L34">                    localized.put(</span>
+<span class="fc" id="L35">                            rs.getString(&quot;string_key&quot;),</span>
+<span class="fc" id="L36">                            rs.getString(&quot;string_value&quot;)</span>
+                    );
+                }
+            }
+
+<span class="nc" id="L41">        } catch (SQLException ex) {</span>
+<span class="nc" id="L42">            throw new IllegalStateException(</span>
+                    &quot;Failed to load localization strings for language: &quot; + language,
+                    ex
+            );
+<span class="fc" id="L46">        }</span>
+
+<span class="fc" id="L48">        return localized;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MainApp.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">shopping-cart</a> &gt; <a href="index.source.html" class="el_package">example.shoppingcart</a> &gt; <span class="el_source">MainApp.java</span></div><h1>MainApp.java</h1><pre class="source lang-java linenums">package example.shoppingcart;
+
+import example.shoppingcart.service.CartService;
+import example.shoppingcart.service.LocalizationService;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Map;
+import java.util.logging.Logger;
+
+public class MainApp {
+
+<span class="fc" id="L13">    private static final Logger LOGGER = Logger.getLogger(MainApp.class.getName());</span>
+
+    private final Connection connection;
+    private final LocalizationService localizationService;
+    private final CartService cartService;
+
+<span class="fc" id="L19">    public MainApp(Connection connection) {</span>
+<span class="fc" id="L20">        this.connection = connection;</span>
+<span class="fc" id="L21">        this.localizationService = new LocalizationService(connection);</span>
+<span class="fc" id="L22">        this.cartService = new CartService(connection);</span>
+<span class="fc" id="L23">    }</span>
+
+    public void run(String language) {
+<span class="fc" id="L26">        Map&lt;String, String&gt; strings = localizationService.getLocalizedStrings(language);</span>
+
+<span class="fc" id="L28">        LOGGER.log(java.util.logging.Level.INFO,</span>
+                &quot;Loaded localization strings: {0}&quot;,
+<span class="fc" id="L30">                strings.size());</span>
+
+<span class="fc" id="L32">        int cartId = cartService.saveCartRecord(&quot;DefaultUser&quot;);</span>
+<span class="fc" id="L33">        cartService.saveCartItem(cartId, &quot;Sample Item&quot;, 1, 9.99);</span>
+
+<span class="fc" id="L35">        LOGGER.info(&quot;Application run completed&quot;);</span>
+<span class="fc" id="L36">    }</span>
+
+    public void close() {
+        try {
+<span class="pc bpc" id="L40" title="2 of 4 branches missed.">            if (connection != null &amp;&amp; !connection.isClosed()) {</span>
+<span class="fc" id="L41">                connection.close();</span>
+            }
+<span class="nc" id="L43">        } catch (SQLException ex) {</span>
+<span class="nc" id="L44">            LOGGER.severe(&quot;Failed to close connection: &quot; + ex.getMessage());</span>
+<span class="fc" id="L45">        }</span>
+<span class="fc" id="L46">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
