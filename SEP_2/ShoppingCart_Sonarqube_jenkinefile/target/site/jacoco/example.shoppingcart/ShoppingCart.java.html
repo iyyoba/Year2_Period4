@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ShoppingCart.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">shopping-cart</a> &gt; <a href="index.source.html" class="el_package">example.shoppingcart</a> &gt; <span class="el_source">ShoppingCart.java</span></div><h1>ShoppingCart.java</h1><pre class="source lang-java linenums">package example.shoppingcart;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+public final class ShoppingCart {
+
+<span class="fc" id="L13">    private static final Logger LOGGER = Logger.getLogger(ShoppingCart.class.getName());</span>
+
+    private static final int LANGUAGE_ENGLISH = 1;
+    private static final int LANGUAGE_FINNISH = 2;
+    private static final int LANGUAGE_SWEDISH = 3;
+    private static final int LANGUAGE_JAPANESE = 4;
+
+    private ShoppingCart() {
+        // Utility class
+    }
+
+    public static double calculateItemTotal(double price, int quantity) {
+<span class="fc" id="L25">        validatePrice(price);</span>
+<span class="fc" id="L26">        validateQuantity(quantity);</span>
+<span class="fc" id="L27">        return price * quantity;</span>
+    }
+
+    public static double calculateCartTotal(List&lt;Double&gt; prices, List&lt;Integer&gt; quantities) {
+<span class="fc bfc" id="L31" title="All 4 branches covered.">        if (prices == null || quantities == null) {</span>
+<span class="fc" id="L32">            throw new IllegalArgumentException(&quot;Prices and quantities must not be null&quot;);</span>
+        }
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        if (prices.size() != quantities.size()) {</span>
+<span class="fc" id="L35">            throw new IllegalArgumentException(&quot;Prices and quantities must have the same size&quot;);</span>
+        }
+
+<span class="fc" id="L38">        double total = 0.0;</span>
+<span class="fc bfc" id="L39" title="All 2 branches covered.">        for (int i = 0; i &lt; prices.size(); i++) {</span>
+<span class="fc" id="L40">            total += calculateItemTotal(prices.get(i), quantities.get(i));</span>
+        }
+<span class="fc" id="L42">        return total;</span>
+    }
+
+    public static Locale selectLocale(int choice) {
+<span class="fc bfc" id="L46" title="All 4 branches covered.">        switch (choice) {</span>
+            case LANGUAGE_FINNISH:
+<span class="fc" id="L48">                return Locale.forLanguageTag(&quot;fi-FI&quot;);</span>
+            case LANGUAGE_SWEDISH:
+<span class="fc" id="L50">                return  Locale.forLanguageTag(&quot;sv-SE&quot;);</span>
+            case LANGUAGE_JAPANESE:
+<span class="fc" id="L52">                return Locale.JAPAN;</span>
+            case LANGUAGE_ENGLISH:
+            default:
+<span class="fc" id="L55">                return Locale.US;</span>
+        }
+    }
+
+    public static void main(String[] args) {
+<span class="fc" id="L60">        configureLogger();</span>
+
+<span class="fc" id="L62">        try (Scanner scanner = new Scanner(System.in)) {</span>
+
+<span class="fc" id="L64">            scanner.useLocale(Locale.US);</span>
+
+<span class="fc" id="L66">            printLanguageOptions();</span>
+<span class="fc" id="L67">            int choice = readInt(scanner);</span>
+
+<span class="fc" id="L69">            Locale locale = selectLocale(choice);</span>
+<span class="fc" id="L70">            ResourceBundle messages = ResourceBundle.getBundle(&quot;MessagesBundle&quot;, locale);</span>
+
+<span class="fc" id="L72">            int itemCount = promptForItemCount(scanner, messages);</span>
+
+<span class="fc" id="L74">            List&lt;Double&gt; prices = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L75">            List&lt;Integer&gt; quantities = new ArrayList&lt;&gt;();</span>
+
+<span class="fc bfc" id="L77" title="All 2 branches covered.">            for (int i = 0; i &lt; itemCount; i++) {</span>
+<span class="fc" id="L78">                prices.add(promptForPrice(scanner, messages));</span>
+<span class="fc" id="L79">                quantities.add(promptForQuantity(scanner, messages));</span>
+            }
+
+<span class="fc" id="L82">            double totalCost = calculateCartTotal(prices, quantities);</span>
+
+<span class="fc" id="L84">            logInfo(() -&gt; messages.getString(&quot;total.cost&quot;) + &quot; &quot; + totalCost);</span>
+        }
+<span class="fc" id="L86">    }</span>
+
+    private static void configureLogger() {
+<span class="fc" id="L89">        LOGGER.setLevel(Level.ALL);</span>
+<span class="fc" id="L90">    }</span>
+
+    private static void printLanguageOptions() {
+<span class="fc" id="L93">        logInfo(() -&gt; &quot;Select language / Valitse kieli / Välj språk / 言語を選択:&quot;);</span>
+<span class="fc" id="L94">        logInfo(() -&gt; &quot;1. English\n2. Finnish\n3. Swedish\n4. Japanese&quot;);</span>
+<span class="fc" id="L95">    }</span>
+
+    private static int promptForItemCount(Scanner scanner, ResourceBundle messages) {
+<span class="fc" id="L98">        logInfo(() -&gt; messages.getString(&quot;enter.items&quot;));</span>
+<span class="fc" id="L99">        return readInt(scanner);</span>
+    }
+
+    private static double promptForPrice(Scanner scanner, ResourceBundle messages) {
+<span class="fc" id="L103">        logInfo(() -&gt; messages.getString(&quot;enter.price&quot;));</span>
+<span class="fc" id="L104">        double price = readDouble(scanner);</span>
+<span class="fc" id="L105">        validatePrice(price);</span>
+<span class="fc" id="L106">        return price;</span>
+    }
+
+    private static int promptForQuantity(Scanner scanner, ResourceBundle messages) {
+<span class="fc" id="L110">        logInfo(() -&gt; messages.getString(&quot;enter.quantity&quot;));</span>
+<span class="fc" id="L111">        int quantity = readInt(scanner);</span>
+<span class="fc" id="L112">        validateQuantity(quantity);</span>
+<span class="fc" id="L113">        return quantity;</span>
+    }
+
+    private static int readInt(Scanner scanner) {
+<span class="pc bpc" id="L117" title="1 of 2 branches missed.">        while (!scanner.hasNextInt()) {</span>
+<span class="nc" id="L118">            scanner.next();</span>
+<span class="nc" id="L119">            logWarning(() -&gt; &quot;Invalid input. Please enter an integer.&quot;);</span>
+        }
+<span class="fc" id="L121">        return scanner.nextInt();</span>
+    }
+
+    private static double readDouble(Scanner scanner) {
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">        while (!scanner.hasNextDouble()) {</span>
+<span class="nc" id="L126">            scanner.next();</span>
+<span class="nc" id="L127">            logWarning(() -&gt; &quot;Invalid input. Please enter a number.&quot;);</span>
+        }
+<span class="fc" id="L129">        return scanner.nextDouble();</span>
+    }
+
+    private static void validatePrice(double price) {
+<span class="fc bfc" id="L133" title="All 2 branches covered.">        if (price &lt; 0) {</span>
+<span class="fc" id="L134">            throw new IllegalArgumentException(&quot;Price cannot be negative&quot;);</span>
+        }
+<span class="fc" id="L136">    }</span>
+
+    private static void validateQuantity(int quantity) {
+<span class="fc bfc" id="L139" title="All 2 branches covered.">        if (quantity &lt; 0) {</span>
+<span class="fc" id="L140">            throw new IllegalArgumentException(&quot;Quantity cannot be negative&quot;);</span>
+        }
+<span class="fc" id="L142">    }</span>
+
+
+    private static void logInfo(LogMessageSupplier supplier) {
+<span class="pc bpc" id="L146" title="1 of 2 branches missed.">        if (LOGGER.isLoggable(Level.INFO)) {</span>
+<span class="fc" id="L147">            LOGGER.info(supplier.get());</span>
+        }
+<span class="fc" id="L149">    }</span>
+
+    private static void logWarning(LogMessageSupplier supplier) {
+<span class="nc bnc" id="L152" title="All 2 branches missed.">        if (LOGGER.isLoggable(Level.WARNING)) {</span>
+<span class="nc" id="L153">            LOGGER.warning(supplier.get());</span>
+        }
+<span class="nc" id="L155">    }</span>
+
+    @FunctionalInterface
+    private interface LogMessageSupplier {
+        String get();
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

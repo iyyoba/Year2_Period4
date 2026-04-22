@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="example.shoppingcart.ShoppingCartController">
+
+    <!-- HEADER: Language Selection -->
+    <top>
+        <HBox spacing="10" style="-fx-background-color: #f0f0f0;">
+            <padding>
+                <Insets top="15" right="15" bottom="15" left="15"/>
+            </padding>
+
+            <Label text="Language:"/>
+            <ComboBox fx:id="languageComboBox" onAction="#handleLanguageChange"/>
+        </HBox>
+    </top>
+
+    <!-- CENTER: Item Count + Dynamic Items -->
+    <center>
+        <VBox spacing="15">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <!-- Item Count Input -->
+            <HBox spacing="10">
+                <Label text="Number of Items:"/>
+                <TextField fx:id="itemCountField" promptText="Enter item count" prefWidth="120"/>
+                <Button text="Generate Fields" onAction="#generateItemFields"/>
+            </HBox>
+
+            <!-- Scrollable Dynamic Items -->
+            <ScrollPane fitToWidth="true" prefHeight="300">
+                <content>
+                    <VBox fx:id="itemsContainer" spacing="12" style="-fx-border-color: #cccccc; -fx-background-color: #fafafa;">
+                        <padding>
+                            <Insets top="10" right="10" bottom="10" left="10"/>
+                        </padding>
+                    </VBox>
+                </content>
+            </ScrollPane>
+
+            <!-- Calculate Button -->
+            <Button text="Calculate Total"
+                    onAction="#calculateTotal"
+                    style="-fx-font-size: 14px; -fx-padding: 8 16;"/>
+
+        </VBox>
+    </center>
+
+    <!-- FOOTER: Total Display -->
+    <bottom>
+        <HBox style="-fx-background-color: #f0f0f0;">
+            <padding>
+                <Insets top="15" right="15" bottom="15" left="15"/>
+            </padding>
+
+            <Label fx:id="totalLabel"
+                   text="Total: 0.00"
+                   style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+        </HBox>
+    </bottom>
+
+</BorderPane>

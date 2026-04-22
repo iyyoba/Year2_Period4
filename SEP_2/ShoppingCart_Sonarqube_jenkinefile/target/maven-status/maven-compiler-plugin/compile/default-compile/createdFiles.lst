@@ -1,0 +1,9 @@
+example/shoppingcart/ShoppingCartService.class
+example/shoppingcart/MainApp.class
+example/shoppingcart/ShoppingCartController.class
+example/shoppingcart/ShoppingCart$LogMessageSupplier.class
+example/shoppingcart/ShoppingCart.class
+example/shoppingcart/service/CartService.class
+example/shoppingcart/service/LocalizationService.class
+example/shoppingcart/db/DatabaseConnection.class
+example/shoppingcart/LocalizationProvider.class

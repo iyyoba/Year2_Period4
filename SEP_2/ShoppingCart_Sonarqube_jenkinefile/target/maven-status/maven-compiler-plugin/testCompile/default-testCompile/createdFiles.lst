@@ -1,0 +1,7 @@
+example/shoppingcart/ShoppingCartServiceTest.class
+example/shoppingcart/ShoppingCartControllerTest.class
+example/shoppingcart/ShoppingCartTest.class
+example/shoppingcart/db/DatabaseConnectionTest.class
+example/shoppingcart/LocalizationProviderTest.class
+example/shoppingcart/service/CartServiceH2Test.class
+example/MainAppTest.class
