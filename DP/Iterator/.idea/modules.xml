@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ComputerBuilderPattern.iml" filepath="$PROJECT_DIR$/ComputerBuilderPattern.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Iterator.iml" filepath="$PROJECT_DIR$/Iterator.iml" />
     </modules>
   </component>
 </project>
